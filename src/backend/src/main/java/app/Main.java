@@ -1,5 +1,11 @@
 import static spark.Spark.*;
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import app.modelo.*;
+import app.modelo.enums.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -9,10 +15,9 @@ public class Main {
         String user = System.getenv("DB_USER");
         String pass = System.getenv("DB_PASS");
 
-        // --- Habilita CORS ---
         enableCORS("*", "GET,POST,OPTIONS", "*");
 
-        // --- Rota principal ---
+        // --- Teste de conexão com o banco ---
         get("/ping", (req, res) -> {
             try (Connection conn = DriverManager.getConnection(url, user, pass)) {
                 return "Conexão OK com Postgres!";
@@ -20,6 +25,30 @@ public class Main {
                 res.status(500);
                 return "Erro ao conectar: " + e.getMessage();
             }
+        });
+
+        // --- Teste das classes modelo ---
+        get("/teste-modelos", (req, res) -> {
+            Cliente cliente = new Cliente();
+            cliente.setNome("Nathália");
+            cliente.setCpf("123.456.789-00");
+
+            Espaco espaco = new Espaco();
+            espaco.setNome("Auditório Central");
+
+            Reserva reserva = new Reserva();
+            reserva.setId(1L);
+            reserva.setDataHoraInicio(LocalDateTime.now());
+            reserva.setDataHoraFim(LocalDateTime.now().plusHours(2));
+            reserva.setSinal(100.0);
+            reserva.setValorTotal(400.0);
+            reserva.setStatusReserva(StatusReserva.CONFIRMADA);
+            reserva.setStatusPagamento(StatusPagamento.SINAL_PAGO);
+            reserva.setCliente(cliente);
+            reserva.setEspaco(espaco);
+            reserva.setPagamentos(new ArrayList<>());
+
+            return "Instâncias criadas com sucesso: " + reserva.toString();
         });
 
         System.out.println("Servidor Spark rodando na porta 8080...");
