@@ -1,3 +1,5 @@
+package app;
+
 import static spark.Spark.*;
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -15,6 +17,7 @@ public class Main {
         String user = System.getenv("DB_USER");
         String pass = System.getenv("DB_PASS");
 
+        System.out.println("USER: " + user);
         enableCORS("*", "GET,POST,OPTIONS", "*");
 
         // --- Teste de conexão com o banco ---
@@ -48,7 +51,7 @@ public class Main {
             reserva.setEspaco(espaco);
             reserva.setPagamentos(new ArrayList<>());
 
-            return "Instâncias criadas com sucesso: " + reserva.toString();
+            return ("Instâncias criadas com sucesso: " + reserva.toString() + ", " + cliente.getNome() + ", " + espaco.getNome());
         });
 
         System.out.println("Servidor Spark rodando na porta 8080...");

@@ -1,17 +1,19 @@
-async function testar() {
+// Verifica e retorna conexão com BD
+async function testarConexaoComBD() {
     try {
-        const res = await fetch("http://localhost:8080/ping") // nome do serviço Docker!
-        document.getElementById("res").innerText = await res.text();
+        const res = await fetch("http://localhost:8080/ping") 
+        document.getElementById("resBD").innerText = await res.text();
     } catch (e) {
-        document.getElementById("res").innerText = "Erro: " + e;
+        document.getElementById("resBD").innerText = "Erro: " + e;
     }
 }
 
-async function testarModelos() {
+// Verifica e retorna camada modelo
+async function testarCamadaModelo() {
     try {
-        const res = await fetch("http://localhost:8080/teste-modelos") // nome do serviço Docker!
-        document.getElementById("res2").innerText = await res.text();
+        const res = await fetch("http://localhost:8080/teste-modelos") 
+        document.getElementById("resModelo").innerText = await res.text();
     } catch (e) {
-        document.getElementById("res2").innerText = "Erro: " + e;
+        document.getElementById("resModelo").innerText = "Erro: " + e;
     }
 }
