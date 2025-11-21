@@ -5,7 +5,7 @@ services:
         environment:
             POSTGRES_USER: user
             POSTGRES_PASSWORD: pass
-            POSTGRES_DB: meuBanco
+            POSTGRES_DB: meu-banco
         volumes:
             - db_data:/var/lib/postgresql/data
         networks:
@@ -15,7 +15,7 @@ services:
         build: ./backend
         environment:
             DB_HOST: db
-            DB_NAME: meuBanco
+            DB_NAME: meu-banco
             DB_USER: user
             DB_PASS: pass
         depends_on:

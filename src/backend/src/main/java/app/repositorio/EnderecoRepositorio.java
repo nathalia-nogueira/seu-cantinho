@@ -1,70 +1,70 @@
 package app.repositorio;
 
-import app.modelo.Usuario;
+import app.modelo.Endereco;
 import jakarta.persistence.*;
 import java.util.List;
 
-public class UsuarioRepositorio {
+public class EnderecoRepositorio {
 
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("seuCantinhoPU");
 
-    public void salvar(Usuario usuario) {
+    public void salvar(Endereco endereco) {
         EntityManager entityManager = emf.createEntityManager();
         try {
             entityManager.getTransaction().begin();
-            entityManager.persist(usuario);
+            entityManager.persist(endereco);
             entityManager.getTransaction().commit();
         } finally {
             entityManager.close();
         }
     }
 
-    public Usuario buscarPorId(Long id) {
+    public Endereco buscarPorId(Long id) {
         EntityManager entityManager = emf.createEntityManager();
         try {
-            return entityManager.find(Usuario.class, id);
+            return entityManager.find(Endereco.class, id);
         } finally {
             entityManager.close();
         }
     }
 
-    public List<Usuario> listar() {
+    public List<Endereco> listar() {
         EntityManager entityManager = emf.createEntityManager();
         try {
-            return entityManager.createQuery("FROM Usuario", Usuario.class).getResultList();
+            return entityManager.createQuery("FROM Endereco", Endereco.class).getResultList();
         } finally {
             entityManager.close();
         }
     }
 
-    public void atualizar(Usuario usuario) {
+    public void atualizar(Endereco endereco) {
         EntityManager entityManager = emf.createEntityManager();
         try {
             entityManager.getTransaction().begin();
-            entityManager.merge(usuario);
+            entityManager.merge(endereco);
             entityManager.getTransaction().commit();
         } finally {
             entityManager.close();
         }
     }
 
-    public void atualizarParcialmente(Long id, Usuario dadosNovos) {
+    public void atualizarParcialmente(Long id, Endereco dadosNovos) {
         EntityManager entityManager = emf.createEntityManager();
         try {
             entityManager.getTransaction().begin();
-            Usuario dadosExistentes = entityManager.find(Usuario.class, id);
+            Endereco dadosExistentes = entityManager.find(Endereco.class, id);
             if (dadosExistentes != null) {
-                if (dadosNovos.getNome() != null)
-                    dadosExistentes.setNome(dadosNovos.getNome());
+                if (dadosNovos.getEstado() != null)
+                    dadosExistentes.setEstado(dadosNovos.getEstado());
                 
-                if (dadosNovos.getCpf() != null)
-                    dadosExistentes.setCpf(dadosNovos.getCpf());
+                if (dadosNovos.getCidade() != null)
+                    dadosExistentes.setCidade(dadosNovos.getCidade());
                 
-                if (dadosNovos.getEmail() != null)
-                    dadosExistentes.setEmail(dadosNovos.getEmail());
+                if (dadosNovos.getRua() != null)
+                    dadosExistentes.setRua(dadosNovos.getRua());
 
-                if (dadosNovos.getTelefone() != null)
-                    dadosExistentes.setTelefone(dadosNovos.getTelefone());
+                if (dadosNovos.getNumero() != null)
+                    dadosExistentes.setNumero(dadosNovos.getNumero());
             }
 
             entityManager.merge(dadosExistentes);
@@ -78,9 +78,9 @@ public class UsuarioRepositorio {
         EntityManager entityManager = emf.createEntityManager();
         try {
             entityManager.getTransaction().begin();
-            Usuario usuario = entityManager.find(Usuario.class, id);
-            if (usuario != null) {
-                entityManager.remove(usuario);
+            Endereco endereco = entityManager.find(Endereco.class, id);
+            if (endereco != null) {
+                entityManager.remove(endereco);
             }
             entityManager.getTransaction().commit();
         } finally {

@@ -1,70 +1,79 @@
 package app.repositorio;
 
-import app.modelo.Usuario;
+import app.modelo.Espaco;
 import jakarta.persistence.*;
 import java.util.List;
 
-public class UsuarioRepositorio {
+public class EspacoRepositorio {
 
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("seuCantinhoPU");
 
-    public void salvar(Usuario usuario) {
+    public void salvar(Espaco espaco) {
         EntityManager entityManager = emf.createEntityManager();
         try {
             entityManager.getTransaction().begin();
-            entityManager.persist(usuario);
+            entityManager.persist(espaco);
             entityManager.getTransaction().commit();
         } finally {
             entityManager.close();
         }
     }
 
-    public Usuario buscarPorId(Long id) {
+    public Espaco buscarPorId(Long id) {
         EntityManager entityManager = emf.createEntityManager();
         try {
-            return entityManager.find(Usuario.class, id);
+            return entityManager.find(Espaco.class, id);
         } finally {
             entityManager.close();
         }
     }
 
-    public List<Usuario> listar() {
+    public List<Espaco> listar() {
         EntityManager entityManager = emf.createEntityManager();
         try {
-            return entityManager.createQuery("FROM Usuario", Usuario.class).getResultList();
+            return entityManager.createQuery("FROM Espaco", Espaco.class).getResultList();
         } finally {
             entityManager.close();
         }
     }
 
-    public void atualizar(Usuario usuario) {
+    public void atualizar(Espaco espaco) {
         EntityManager entityManager = emf.createEntityManager();
         try {
             entityManager.getTransaction().begin();
-            entityManager.merge(usuario);
+            entityManager.merge(espaco);
             entityManager.getTransaction().commit();
         } finally {
             entityManager.close();
         }
     }
 
-    public void atualizarParcialmente(Long id, Usuario dadosNovos) {
+    public void atualizarParcialmente(Long id, Espaco dadosNovos) {
         EntityManager entityManager = emf.createEntityManager();
         try {
             entityManager.getTransaction().begin();
-            Usuario dadosExistentes = entityManager.find(Usuario.class, id);
+            Espaco dadosExistentes = entityManager.find(Espaco.class, id);
             if (dadosExistentes != null) {
                 if (dadosNovos.getNome() != null)
                     dadosExistentes.setNome(dadosNovos.getNome());
                 
-                if (dadosNovos.getCpf() != null)
-                    dadosExistentes.setCpf(dadosNovos.getCpf());
+                if (dadosNovos.getDescricao() != null)
+                    dadosExistentes.setDescricao(dadosNovos.getDescricao());
                 
-                if (dadosNovos.getEmail() != null)
-                    dadosExistentes.setEmail(dadosNovos.getEmail());
+                if (dadosNovos.getFotos() != null)
+                    dadosExistentes.setFotos(dadosNovos.getFotos());
 
-                if (dadosNovos.getTelefone() != null)
-                    dadosExistentes.setTelefone(dadosNovos.getTelefone());
+                if (dadosNovos.getCapacidade() != null)
+                    dadosExistentes.setCapacidade(dadosNovos.getCapacidade());
+
+                if (dadosNovos.getPrecoDiaria() != 0) 
+                    dadosExistentes.setPrecoDiaria(dadosNovos.getPrecoDiaria());
+
+                if (dadosNovos.getEndereco() != null)
+                    dadosExistentes.setEndereco(dadosNovos.getEndereco());
+
+                if (dadosNovos.getFilial() != null)
+                    dadosExistentes.setFilial(dadosNovos.getFilial());
             }
 
             entityManager.merge(dadosExistentes);
@@ -78,9 +87,9 @@ public class UsuarioRepositorio {
         EntityManager entityManager = emf.createEntityManager();
         try {
             entityManager.getTransaction().begin();
-            Usuario usuario = entityManager.find(Usuario.class, id);
-            if (usuario != null) {
-                entityManager.remove(usuario);
+            Espaco espaco = entityManager.find(Espaco.class, id);
+            if (espaco != null) {
+                entityManager.remove(espaco);
             }
             entityManager.getTransaction().commit();
         } finally {
