@@ -1,9 +1,7 @@
 package app.modelo;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+import lombok.*;
+import jakarta.persistence.*;
 import app.modelo.Filial;
 
 // Criação de construtores, getters e setters
@@ -11,7 +9,13 @@ import app.modelo.Filial;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+
+// Persistência
+@Entity
+@DiscriminatorValue("ADMINISTRADOR")
 public class Administrador extends Usuario {
     // Atributos
+    @OneToOne
+    @JoinColumn(name = "filialId", unique = true)
     private Filial filial;
 }

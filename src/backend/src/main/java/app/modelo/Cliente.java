@@ -1,9 +1,7 @@
 package app.modelo;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+import lombok.*;
+import jakarta.persistence.*;
 import java.util.List;
 import app.modelo.Reserva;
 
@@ -12,7 +10,12 @@ import app.modelo.Reserva;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+
+// Persistência
+@Entity
+@DiscriminatorValue("CLIENTE")
 public class Cliente extends Usuario {
     // Atributos
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reserva> reservas;
 }

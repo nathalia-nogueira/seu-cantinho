@@ -1,9 +1,7 @@
 package app.modelo;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+import lombok.*;
+import jakarta.persistence.*;
 import java.time.LocalDateTime; 
 import java.util.List;
 import app.modelo.Endereco;
@@ -13,10 +11,23 @@ import app.modelo.Endereco;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+
+// Persistência
+@Entity
+@Table(name = "filial")
 public class Filial {
     // Atributos
+    @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private String nome;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "enderecoId", unique = true, nullable = false)
     private Endereco endereco;
+
+    @OneToMany(mappedBy = "filial", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Espaco> espacos;
 }

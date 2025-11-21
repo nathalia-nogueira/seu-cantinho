@@ -1,9 +1,7 @@
 package app.modelo;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+import lombok.*;
+import jakarta.persistence.*;
 import java.time.LocalDateTime; 
 import java.util.List;
 
@@ -12,10 +10,25 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+
+// Persistência
+@Entity
+@Table(name = "endereco")
 public class Endereco {
     // Atributos
+    @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
     private String estado;
+
+    @Column(nullable = false)
     private String cidade;
+
+    @Column(nullable = false)
     private String rua;
+
+    @Column(nullable = false)
     private Integer numero;
 }

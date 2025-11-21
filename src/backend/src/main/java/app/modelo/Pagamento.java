@@ -1,21 +1,32 @@
 package app.modelo;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+import lombok.*;
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 // Criação de construtores, getters e setters
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+
+// Persistência
+@Entity 
+@Table(name = "pagamento")
 public class Pagamento {
     // Atributos
+
+    @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private double valor;
+
+    @Column(nullable = false)
     private LocalDateTime data;
+
+    @ManyToOne
+    @JoinColumn(name = "reservaId", nullable = false)
     private Reserva reserva;
 }

@@ -1,36 +1,22 @@
 package app;
 
 import static spark.Spark.*;
-import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 
+import com.google.gson.Gson;
 import app.modelo.*;
 import app.modelo.enums.*;
+import app.repositorio.UsuarioRepositorio;
 
 public class Main {
     public static void main(String[] args) {
         port(8080);
+        enableCORS("*", "GET, POST, PUT, PATCH, DELETE, OPTIONS", "*");
 
-        String url = "jdbc:postgresql://" + System.getenv("DB_HOST") + ":5432/" + System.getenv("DB_NAME");
-        String user = System.getenv("DB_USER");
-        String pass = System.getenv("DB_PASS");
+        Gson gson = new Gson();
+        UsuarioRepositorio usuarioRepo = new UsuarioRepositorio();
 
-        System.out.println("USER: " + user);
-        enableCORS("*", "GET,POST,OPTIONS", "*");
-
-        // --- Teste de conexão com o banco ---
-        get("/ping", (req, res) -> {
-            try (Connection conn = DriverManager.getConnection(url, user, pass)) {
-                return "Conexão OK com Postgres!";
-            } catch (Exception e) {
-                res.status(500);
-                return "Erro ao conectar: " + e.getMessage();
-            }
-        });
-
-        // --- Teste das classes modelo ---
         get("/teste-modelos", (req, res) -> {
             Cliente cliente = new Cliente();
             cliente.setNome("Nathália");
@@ -51,7 +37,50 @@ public class Main {
             reserva.setEspaco(espaco);
             reserva.setPagamentos(new ArrayList<>());
 
-            return ("Instâncias criadas com sucesso: " + reserva.toString() + ", " + cliente.getNome() + ", " + espaco.getNome());
+            return "Instâncias criadas com sucesso: "
+                   + reserva.toString() + ", "
+                   + cliente.getNome() + ", "
+                   + espaco.getNome();
+        });
+
+        post("/usuarios", (req, res) -> {
+            Usuario usuario = gson.fromJson(req.body(), Usuario.class);
+            usuarioRepo.salvar(usuario);
+            res.status(201);
+            return gson.toJson(usuario);
+        });
+
+        get("/usuarios", (req, res) -> gson.toJson(usuarioRepo.listar()));
+
+        get("/usuarios/:id", (req, res) -> {
+            Long id = Long.parseLong(req.params(":id"));
+            Usuario usuario = usuarioRepo.buscarPorId(id);
+            if (usuario == null) {
+                res.status(404);
+                return "{\"erro\": \"Usuário não encontrado\"}";
+            }
+            return gson.toJson(usuario);
+        });
+
+        put("/usuarios/:id", (req, res) -> {
+            Usuario usuario = gson.fromJson(req.body(), Usuario.class);
+            usuario.setId(Long.parseLong(req.params(":id")));
+            usuarioRepo.atualizar(usuario);
+            return gson.toJson(usuario);
+        });
+
+        patch("/usuarios/:id", (req, res) -> {
+            Long id = Long.parseLong(req.params(":id"));
+            Usuario dadosNovos = gson.fromJson(req.body(), Usuario.class);
+            usuarioRepo.atualizarParcial(id, dadosNovos);
+            return gson.toJson(usuarioRepo.buscarPorId(id));
+        });
+
+        delete("/usuarios/:id", (req, res) -> {
+            Long id = Long.parseLong(req.params(":id"));
+            usuarioRepo.remover(id);
+            res.status(204);
+            return "";
         });
 
         System.out.println("Servidor Spark rodando na porta 8080...");
@@ -61,14 +90,12 @@ public class Main {
     private static void enableCORS(final String origin, final String methods, final String headers) {
         options("/*", (request, response) -> {
             String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");
-            if (accessControlRequestHeaders != null) {
+            if (accessControlRequestHeaders != null)
                 response.header("Access-Control-Allow-Headers", accessControlRequestHeaders);
-            }
 
             String accessControlRequestMethod = request.headers("Access-Control-Request-Method");
-            if (accessControlRequestMethod != null) {
+            if (accessControlRequestMethod != null)
                 response.header("Access-Control-Allow-Methods", accessControlRequestMethod);
-            }
 
             return "OK";
         });
