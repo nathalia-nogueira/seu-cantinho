@@ -1,6 +1,6 @@
 package app.repositorio;
 
-import app.modelo.Filial;
+import app.modelo.*;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -82,6 +82,19 @@ public class PagamentoRepositorio {
                 entityManager.remove(filial);
             }
             entityManager.getTransaction().commit();
+        } finally {
+            entityManager.close();
+        }
+    }
+
+    public double somarPagamentosPorReserva(Long reservaId) {
+        EntityManager entityManager = emf.createEntityManager();
+
+        try {
+            double somaPagamentos = entityManager.createQuery("SELECT SUM(p.valor) FROM Pagamento p WHERE p.reserva.ide = :id",
+            Double.class).setParameter("id", reservaId).getSingleResult();
+        
+            return somaPagamentos;
         } finally {
             entityManager.close();
         }

@@ -1,6 +1,6 @@
 package app.repositorio;
 
-import app.modelo.Filial;
+import app.modelo.*;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -82,6 +82,17 @@ public class FilialRepositorio {
                 entityManager.remove(filial);
             }
             entityManager.getTransaction().commit();
+        } finally {
+            entityManager.close();
+        }
+    }
+
+    public List<Espaco> listarEspacosPorFilial(Long filialId) {
+        EntityManager entityManager = emf.createEntityManager();
+
+        try {
+            return entityManager.createQuery("FROM Espaco e WHERE e.filial.id = :id",
+            Espaco.class).setParameter("id", filialId).getResultList();
         } finally {
             entityManager.close();
         }

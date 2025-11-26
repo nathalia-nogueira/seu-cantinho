@@ -1,7 +1,8 @@
 package app.repositorio;
 
-import app.modelo.Espaco;
+import app.modelo.*;
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class EspacoRepositorio {
@@ -92,6 +93,21 @@ public class EspacoRepositorio {
                 entityManager.remove(espaco);
             }
             entityManager.getTransaction().commit();
+        } finally {
+            entityManager.close();
+        }
+    }
+
+    public List<Espaco> buscarDisponiveis(LocalDateTime inicio, LocalDateTime fim) {
+        EntityManager entityManager = emf.createEntityManager();
+        try {
+            return entityManager.createQuery("""
+                SELECT e FROM Espaco e
+                WHERE e.id NOT IN (
+                    SELECT r.espaco.id FROM Reserva r 
+                    WHERE (r.dataHoraInicio <= :fim AND r.dataHoraFim >= :inicio)
+                )
+            """, Espaco.class).setParameter("inicio", inicio).setParameter("fim", fim).getResultList();
         } finally {
             entityManager.close();
         }

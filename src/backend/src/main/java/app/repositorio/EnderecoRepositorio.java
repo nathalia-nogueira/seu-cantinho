@@ -1,6 +1,6 @@
 package app.repositorio;
 
-import app.modelo.Endereco;
+import app.modelo.*;
 import jakarta.persistence.*;
 import java.util.List;
 

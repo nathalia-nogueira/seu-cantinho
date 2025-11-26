@@ -1,6 +1,7 @@
 package app.repositorio;
 
-import app.modelo.Filial;
+import app.modelo.*;
+import app.modelo.enums.*;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class ReservaRepositorio {
         }
     }
 
-    public Filial buscarPorId(Long id) {
+    public Reserva buscarPorId(Long id) {
         EntityManager entityManager = emf.createEntityManager();
         try {
             return entityManager.find(Reserva.class, id);
@@ -100,6 +101,26 @@ public class ReservaRepositorio {
                 entityManager.remove(filial);
             }
             entityManager.getTransaction().commit();
+        } finally {
+            entityManager.close();
+        }
+    }
+
+    public List<Reserva> buscarPorCliente(Long clienteId) {
+        EntityManager entityManager = emf.createEntityManager();
+        try {
+            return entityManager.createQuery("FROM Reserva r WHERE r.cliente.id = :id", 
+            Reserva.class).setParameter("id", clienteId).getResultList(); 
+        } finally {
+            entityManager.close();
+        }
+    }
+
+    public List<Reserva> buscarPorStatys(StatusReserva status) {
+        EntityManager entityManager = emf.createEntityManager();
+        try {
+            return entityManager.createQuery("FROM Reserva r WHERE r.statusReserva = :status",
+            Reserva.class).setParameter("status", status).getResultList();
         } finally {
             entityManager.close();
         }
