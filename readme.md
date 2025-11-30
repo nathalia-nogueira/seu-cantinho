@@ -8,15 +8,15 @@ Cada arquivo ou diretório relevante para o sistema está definido abaixo:
 - documentacao.pdf: documentação criada com o objetivo de centralizar todas as decisões de design tomadas, assim como detalhar aspectos relevantes sobre o sistema criado.
 - espec/especificacao.pdf: especificação do trabalho
 - uml/: diagramas uml criados
-- /src/backend: código-fonte do backend, dividido nas camadas descritas em documentacao.pdf
-- /src/frontend: código-fonte para o frontend
+- /src/backend/: código-fonte do backend, dividido nas camadas descritas em documentacao.pdf
+- /src/frontend/: código-fonte para o frontend
 - /src/docker-compose: arquivo principal para implantação via ```docker-compose up``` 
 
 ## Guia de execução
 Para executar basta, a partir da pasta seu-cantinho no terminal, entrar no diretório src via ```cd src``` e executar ```docker-compose up```. 
 Quando for impresso no terminal ``` backend_1 | Servidor Spark rodando na porta 8080 ```, a interface estará disponível em http://localhost.
 
-Além disso, o backend estará disponível em http://localhost:8080/<endpoint de interesse> - acessar diretamente esses endpoints pode ser útil para testes. Além disso, todos os endpoints disponíveis estarão documentados com swagger em http://localhost:8080/docs. 
+Além disso, o backend estará disponível em http://localhost:8080/endpoint_de_interesse - acessar diretamente esses endpoints pode ser útil para testes. Além disso, todos os endpoints disponíveis estarão documentados com swagger em http://localhost:8080/docs. 
 
 ## Como navegar no protótipo
 Com o projeto em execução, a interface será disponibilizada em http://localhost.
