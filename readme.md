@@ -13,7 +13,7 @@ Cada arquivo ou diretório relevante para o sistema está definido abaixo:
 - /src/docker-compose: arquivo principal para implantação via ```docker-compose up``` 
 
 ## Guia de execução
-Para executar basta, a partir da pasta seu-cantinho no terminal, entrar no diretório src via ```cd src``` e executar ```docker-compose up```. 
+Para executar basta, a partir da pasta seu-cantinho no terminal, entrar no diretório src via ```cd src``` e executar ```docker-compose up``` (ou com ```docker compose```). 
 Quando for impresso no terminal ``` backend_1 | Servidor Spark rodando na porta 8080 ```, a interface estará disponível em http://localhost.
 
 Além disso, o backend estará disponível em http://localhost:8080/endpoint_de_interesse - acessar diretamente esses endpoints pode ser útil para testes. Além disso, todos os endpoints disponíveis estarão documentados com swagger em http://localhost:8080/docs. 
