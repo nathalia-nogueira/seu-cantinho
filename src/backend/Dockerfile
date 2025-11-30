@@ -10,5 +10,6 @@ FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
 
 COPY --from=build /app/target/backend-1.0.jar app.jar
+COPY --from=build /app/target/classes/openapi.yaml ./openapi.yaml
 
 CMD ["java", "-jar", "app.jar"]

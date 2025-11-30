@@ -9,12 +9,15 @@ import app.modelo.*;
 import app.modelo.enums.*;
 import app.repositorio.*;
 import app.controlador.*;
+import app.config.*;
 
 public class Main {
     public static void main(String[] args) {
         port(8080);
         enableCORS("*", "GET, POST, PUT, PATCH, DELETE, OPTIONS", "*");
 
+        SwaggerConfig.setupSwagger();
+        
         Gson gson = new Gson();
         ClienteControlador clienteControlador = new ClienteControlador();
         AdministradorControlador administradorControlador = new AdministradorControlador();
