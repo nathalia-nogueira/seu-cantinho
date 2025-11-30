@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 @Table(name = "pagamento")
 public class Pagamento {
     // Atributos
-
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

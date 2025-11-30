@@ -18,9 +18,7 @@ public class ReservaRepositorio {
             Espaco espaco = entityManager.find(Espaco.class, reserva.getEspaco().getId());
 
             reserva.setCliente(cliente);
-            System.out.println("O cliente é " + reserva.getCliente());
             reserva.setEspaco(espaco);
-            System.out.println("O espaço é " + reserva.getEspaco());
 
             entityManager.persist(reserva);
             entityManager.getTransaction().commit();
@@ -105,9 +103,9 @@ public class ReservaRepositorio {
         
         try {
             entityManager.getTransaction().begin();
-            Filial filial = entityManager.find(Filial.class, id);
-            if (filial != null) {
-                entityManager.remove(filial);
+            Reserva reserva = entityManager.find(Reserva.class, id);
+            if (reserva != null) {
+                entityManager.remove(reserva);
             }
             entityManager.getTransaction().commit();
         } finally {
@@ -125,7 +123,7 @@ public class ReservaRepositorio {
         }
     }
 
-    public List<Reserva> buscarPorStatys(StatusReserva status) {
+    public List<Reserva> buscarPorStatus(StatusReserva status) {
         EntityManager entityManager = emf.createEntityManager();
         try {
             return entityManager.createQuery("FROM Reserva r WHERE r.statusReserva = :status",

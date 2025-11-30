@@ -24,11 +24,7 @@ public class ClienteControlador {
             });
 
             post("", (req, res) -> {
-                System.out.println("Recebi uma requisição post cliente");
                 Cliente cliente = gson.fromJson(req.body(), Cliente.class);
-                System.out.println("Sai do fromJson");
-                System.out.println(req.body());
-                System.out.println(cliente);
                 clienteServico.salvar(cliente);
                 res.status(201);
                 return gson.toJson(cliente);

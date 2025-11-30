@@ -35,8 +35,8 @@ public class ReservaControlador {
                 for (Reserva reserva : reservas) {
                     Map<String, Object> reservaMap = new HashMap<>();
                     reservaMap.put("id", reserva.getId());
-                    reservaMap.put("dataHoraInicio", reserva.getDataHoraInicio());
-                    reservaMap.put("dataHoraFim", reserva.getDataHoraFim());
+                    reservaMap.put("dataHoraInicio", reserva.getDataHoraInicio().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+                    reservaMap.put("dataHoraFim", reserva.getDataHoraFim().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
                     reservaMap.put("sinal", reserva.getSinal());
                     reservaMap.put("valorTotal", reserva.getValorTotal());
                     reservaMap.put("statusReserva", reserva.getStatusReserva());
@@ -66,9 +66,31 @@ public class ReservaControlador {
                 Reserva reserva = reservaServico.buscarPorId(id);
                 if (reserva == null) {
                     res.status(404);
-                    return "{\"erro\": \"Usuário não encontrado\"}";
+                    return "{\"erro\": \"Reserva não encontrada\"}";
                 }
-                return gson.toJson(reserva);
+
+                Map<String, Object> reservaMap = new HashMap<>();
+                reservaMap.put("id", reserva.getId());
+                reservaMap.put("dataHoraInicio", reserva.getDataHoraInicio().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+                reservaMap.put("dataHoraFim", reserva.getDataHoraFim().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+                reservaMap.put("sinal", reserva.getSinal());
+                reservaMap.put("valorTotal", reserva.getValorTotal());
+                reservaMap.put("statusReserva", reserva.getStatusReserva());
+                reservaMap.put("statusPagamento", reserva.getStatusPagamento());
+
+                Map<String, Object> clienteMap = new HashMap<>();
+                if (reserva.getCliente() != null) {
+                    clienteMap.put("id", reserva.getCliente().getId());
+                }
+                reservaMap.put("cliente", clienteMap);
+
+                Map<String, Object> espacoMap = new HashMap<>();
+                if (reserva.getEspaco() != null) {
+                    espacoMap.put("id", reserva.getEspaco().getId());
+                }
+                reservaMap.put("espaco", espacoMap);
+                
+                return gson.toJson(reservaMap);
             });
 
             post("", (req, res) -> {
@@ -107,6 +129,30 @@ public class ReservaControlador {
                 reservaServico.atualizarParcialmente(id, dadosNovos);
                 return gson.toJson(reservaServico.buscarPorId(id));
             });
+
+            patch("/:id/pagar", (req, res) -> {
+                try {
+                    Long reservaId = Long.parseLong(req.params("id"));
+                    Map<String, Object> body = new Gson().fromJson(req.body(), Map.class);
+                    Double valorPago = ((Number) body.get("valor")).doubleValue();
+        
+                    Reserva reserva = reservaServico.buscarPorId(reservaId);
+        
+                    if (reserva == null) {
+                        res.status(404);
+                        return "{\"error\": \"Reserva não encontrada\"}";
+                    }
+        
+                    String resultado = reservaServico.processarPagamento(reserva, valorPago);
+        
+                    res.type("application/json");
+                    return "{\"message\": \"" + resultado + "\", \"reservaId\": " + reservaId + "}";
+        
+                } catch (Exception e) {
+                    res.status(500);
+                    return "{\"error\": \"Erro ao processar pagamento: " + e.getMessage() + "\"}";
+                }
+            }); 
 
             delete("/:id", (req, res) -> {
                 Long id = Long.parseLong(req.params(":id"));

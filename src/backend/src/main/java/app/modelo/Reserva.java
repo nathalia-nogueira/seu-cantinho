@@ -42,11 +42,11 @@ public class Reserva {
     @Column(nullable = false)  
     private StatusPagamento statusPagamento;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "clienteId", nullable = false)
     private Cliente cliente;
 
-    @ManyToOne 
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "espacoId", nullable = false)
     private Espaco espaco;
 

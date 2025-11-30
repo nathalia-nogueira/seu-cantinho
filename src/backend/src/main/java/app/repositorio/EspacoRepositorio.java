@@ -105,7 +105,6 @@ public class EspacoRepositorio {
     }
 
     public List<Espaco> buscarDisponiveis(LocalDateTime inicio, LocalDateTime fim) {
-        System.out.println("Inicio eh " + inicio + " e fim eh " + fim);
         EntityManager entityManager = emf.createEntityManager();
         try {
             return entityManager.createQuery("""

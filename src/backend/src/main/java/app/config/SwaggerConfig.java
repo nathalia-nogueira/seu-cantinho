@@ -13,24 +13,19 @@ public class SwaggerConfig {
             res.type("application/yaml");
             String content = null;
             
-            // 1. Tenta carregar do classpath (funciona no JAR)
             try (InputStream inputStream = SwaggerConfig.class.getClassLoader()
                     .getResourceAsStream("openapi.yaml")) {
                 if (inputStream != null) {
                     content = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
-                    System.out.println("✅ openapi.yaml carregado do classpath");
                 }
             } catch (Exception e) {
-                System.out.println("❌ Erro ao carregar do classpath: " + e.getMessage());
             }
             
-            // 2. Se não encontrou no classpath, tenta do filesystem
             if (content == null) {
                 try {
                     content = Files.readString(Paths.get("openapi.yaml"), StandardCharsets.UTF_8);
-                    System.out.println("✅ openapi.yaml carregado do filesystem");
                 } catch (Exception e) {
-                    System.out.println("❌ Erro ao carregar do filesystem: " + e.getMessage());
+                    System.out.println("Erro");
                 }
             }
             
@@ -42,7 +37,6 @@ public class SwaggerConfig {
             }
         });
         
-        // Swagger UI
         Spark.get("/docs", (req, res) -> {
             res.type("text/html");
             return """

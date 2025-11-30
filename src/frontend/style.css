@@ -1,33 +1,37 @@
 body {
     font-family: "Segoe UI", sans-serif;
-    background-color: #f7f9fa;
+    background-color: #fff5f5;
     margin: 0;
     padding: 0;
+    color: #333;
 }
 
 header {
-    background-color: #2b4b77;
-    color: white; 
-    padding: 1rem; 
+    background-color: #d52d00; 
+    color: white;
+    padding: 1rem;
     text-align: center;
 }
 
 nav button {
     margin: 0.5rem;
     padding: 0.5rem 1rem;
-    background: #ffff33;
+    background: #ff9a56; 
     border: none;
     color: white;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
 }
 
 nav button:hover {
-    background: #ffff66;
+    background: #ff8c3a; 
 }
 
 main {
-    padding: 2rem;
+    padding: 1rem;
+    background: white;
+    margin: 1rem;
+    border-radius: 4px;
 }
 
 section {
@@ -43,10 +47,15 @@ form {
     flex-wrap: wrap;
     gap: 0.5rem;
     margin-bottom: 1rem;
+    padding: 1rem;
+    background: #fff0f0;
+    border-radius: 4px;
 }
 
 input, button {
     padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
 }
 
 table {
@@ -56,25 +65,44 @@ table {
     background: white;
 }
 
-th,td {
-    border: 1px solid #ccc;
+th {
+    background-color: #a30262; 
+    color: white;
     padding: 0.5rem;
     text-align: left;
 }
 
+td {
+    border: 1px solid #ddd;
+    padding: 0.5rem;
+}
+
+tr:nth-child(even) {
+    background-color: #fff8f8;
+}
+
 button.acao {
     padding: 0.3rem 0.6rem;
-    background-color: #2b4b77;
-    color: white;
+    background-color: #8a0252;
+    color: #ffffff;
     border: none;
     border-radius: 3px;
     cursor: pointer;
-}
-
-button.acao.cancelar {
-    background-color: #c0392b;
+    margin: 0.1rem;
 }
 
 button.acao.pagar {
-    background-color: #27ae60;
+    background-color: #d52d00; 
+}
+
+button.acao.pagar:hover {
+    background-color: #b32500;
+}
+
+button.acao.cancelar {
+    background-color: #a30262;
+}
+
+button.acao.cancelar:hover {
+    background-color: #8a0252;
 }

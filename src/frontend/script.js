@@ -12,15 +12,27 @@ async function getJSON(url) {
 }
 
 async function postJSON(url, data) {
-    await fetch(url, { method: "POST", headers, body: JSON.stringify(data) });
-}
-
-async function deleteItem(url) {
-    await fetch(url, { method: "DELETE" });
+    await fetch(url, { 
+        method: "POST", 
+        headers, 
+        body: JSON.stringify(data) 
+    });
 }
 
 async function patchJSON(url, data) {
-    await fetch(url, { method: "PATCH", headers, body: JSON.stringify(data) });
+    const res = await fetch(url, {
+        method: 'PATCH',
+        headers,
+        body: JSON.stringify(data)
+    });
+    
+    return res.ok ? res.json() : []; 
+}
+
+async function deleteItem(url) {
+    await fetch(url, { 
+        method: "DELETE" 
+    });
 }
 
 async function carregarClientes() {
@@ -190,6 +202,7 @@ async function carregarFiliais() {
             <th>Cidade</th>
             <th>Estado</th>
             <th>Número</th>
+            <th>Ações</th>
         </tr> 
         ${filiais.map(filial => `
             <tr>
@@ -236,6 +249,7 @@ async function carregarReservas() {
             <th>Início</th>
             <th>Fim</th>
             <th>Sinal</th>
+            <th>Valor total</th>
             <th>ID do Cliente</th>
             <th>ID do Espaço</th>
             <th>Status</th>
@@ -248,6 +262,7 @@ async function carregarReservas() {
                 <td>${reserva.dataHoraInicio}</td>
                 <td>${reserva.dataHoraFim}</td>
                 <td>${reserva.sinal}</td>
+                <td>${reserva.valorTotal}</td>
                 <td>${reserva.cliente?.id}</td>
                 <td>${reserva.espaco?.id}</td>
                 <td>${reserva.statusReserva}</td>
@@ -280,14 +295,26 @@ document.getElementById("formReserva").onsubmit = async evento => {
 
 async function cancelarReserva(id) {
     if (confirm("Cancelar reserva?")) {
-        await patchJSON(`${API}/reservas/${id}/cancelar`, {});
+        await deleteItem(`${API}/reservas/${id}`, {});
         carregarReservas();
     }
 }
 
 async function pagarReserva(id) {
-    await patchJSON(`${API}/reservas/${id}/pagar`, {});
-    carregarReservas();
+    const valor = prompt("Digite o valor a ser pago:");
+    if (valor && !isNaN(valor)) {
+        try {
+            const response = await patchJSON(`${API}/reservas/${id}/pagar`, { 
+                valor: parseFloat(valor) 
+            });
+            alert(response.message);
+            carregarReservas();
+        } catch (error) {
+            alert('Erro ao processar pagamento: ' + error.message);
+        }
+    } else {
+        alert('Valor inválido!');
+    }
 }
 
 window.onload = () => {
