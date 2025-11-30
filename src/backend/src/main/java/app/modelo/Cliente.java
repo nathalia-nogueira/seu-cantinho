@@ -17,5 +17,5 @@ import app.modelo.Reserva;
 public class Cliente extends Usuario {
     // Atributos
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Reserva> reservas;
+    private transient List<Reserva> reservas; 
 }

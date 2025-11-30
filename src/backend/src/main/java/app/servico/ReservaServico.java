@@ -15,9 +15,13 @@ public class ReservaServico {
             throw new Exception("Reserva deve ter um espaço definido.");
         }
 
-        boolean estaDisponivel = espacoRepo.buscarDisponiveis(reserva.getDataHoraInicio(), reserva.getDataHoraFim()).contains(reserva.getEspaco());
-        if (!estaDisponivel)
+        List<Espaco> espacosDisponiveis = espacoRepo.buscarDisponiveis(reserva.getDataHoraInicio(), reserva.getDataHoraFim()); 
+        boolean estaDisponivel = espacoEstaDisponivel(reserva, espacosDisponiveis);
+
+        if (!estaDisponivel) {
+            System.out.println("Espaço não disponível");
             throw new Exception("Espaço indisponível no período selecionado.");
+        }
 
         double duracao = java.time.Duration.between(reserva.getDataHoraInicio(), reserva.getDataHoraFim()).toHours();
         reserva.setValorTotal(reserva.getEspaco().getPrecoDiaria() * (duracao / 24.0));
@@ -25,8 +29,18 @@ public class ReservaServico {
         reserva.setStatusReserva(StatusReserva.PENDENTE);
         reserva.setStatusPagamento(StatusPagamento.AGUARDANDO_SINAL);
 
+        System.out.println("Entrando em salvar repo");
         reservaRepo.salvar(reserva);
         return reserva;
+    }
+
+    public boolean espacoEstaDisponivel(Reserva reserva, List<Espaco> espacosDisponiveis) {
+        for (Espaco e : espacosDisponiveis) {
+            if (e.getId().equals(reserva.getEspaco().getId())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public List<Reserva> listar() { 

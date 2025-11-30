@@ -4,55 +4,55 @@ import app.modelo.*;
 import jakarta.persistence.*;
 import java.util.List;
 
-public class UsuarioRepositorio {
+public class ClienteRepositorio {
 
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("seuCantinhoPU");
 
-    public void salvar(Usuario usuario) {
+    public void salvar(Cliente cliente) {
         EntityManager entityManager = emf.createEntityManager();
         try {
             entityManager.getTransaction().begin();
-            entityManager.persist(usuario);
+            entityManager.persist(cliente);
             entityManager.getTransaction().commit();
         } finally {
             entityManager.close();
         }
     }
 
-    public Usuario buscarPorId(Long id) {
+    public Cliente buscarPorId(Long id) {
         EntityManager entityManager = emf.createEntityManager();
         try {
-            return entityManager.find(Usuario.class, id);
+            return entityManager.find(Cliente.class, id);
         } finally {
             entityManager.close();
         }
     }
 
-    public List<Usuario> listar() {
+    public List<Cliente> listar() {
         EntityManager entityManager = emf.createEntityManager();
         try {
-            return entityManager.createQuery("FROM Usuario", Usuario.class).getResultList();
+            return entityManager.createQuery("SELECT u FROM Usuario u WHERE TYPE(u) = Cliente", Cliente.class).getResultList();
         } finally {
             entityManager.close();
         }
     }
 
-    public void atualizar(Usuario usuario) {
+    public void atualizar(Cliente cliente) {
         EntityManager entityManager = emf.createEntityManager();
         try {
             entityManager.getTransaction().begin();
-            entityManager.merge(usuario);
+            entityManager.merge(cliente);
             entityManager.getTransaction().commit();
         } finally {
             entityManager.close();
         }
     }
 
-    public void atualizarParcialmente(Long id, Usuario dadosNovos) {
+    public void atualizarParcialmente(Long id, Cliente dadosNovos) {
         EntityManager entityManager = emf.createEntityManager();
         try {
             entityManager.getTransaction().begin();
-            Usuario dadosExistentes = entityManager.find(Usuario.class, id);
+            Cliente dadosExistentes = entityManager.find(Cliente.class, id);
             if (dadosExistentes != null) {
                 if (dadosNovos.getNome() != null)
                     dadosExistentes.setNome(dadosNovos.getNome());
@@ -78,21 +78,11 @@ public class UsuarioRepositorio {
         EntityManager entityManager = emf.createEntityManager();
         try {
             entityManager.getTransaction().begin();
-            Usuario usuario = entityManager.find(Usuario.class, id);
-            if (usuario != null) {
-                entityManager.remove(usuario);
+            Cliente cliente = entityManager.find(Cliente.class, id);
+            if (cliente != null) {
+                entityManager.remove(cliente);
             }
             entityManager.getTransaction().commit();
-        } finally {
-            entityManager.close();
-        }
-    }
-
-    public List<Usuario> listarPorTipo(Class<? extends Usuario> tipo) {
-        EntityManager entityManager = emf.createEntityManager();
-        try {
-            return entityManager.createQuery("SELECT u FROM Usuario u WHERE TYPE(u) = :tipo", Usuario.class)
-            .setParameter("tipo", tipo).getResultList();
         } finally {
             entityManager.close();
         }

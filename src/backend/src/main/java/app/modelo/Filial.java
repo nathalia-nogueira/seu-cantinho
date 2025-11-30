@@ -29,5 +29,5 @@ public class Filial {
     private Endereco endereco;
 
     @OneToMany(mappedBy = "filial", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Espaco> espacos;
+    private transient List<Espaco> espacos;
 }

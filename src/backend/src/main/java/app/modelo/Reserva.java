@@ -51,5 +51,5 @@ public class Reserva {
     private Espaco espaco;
 
     @OneToMany(mappedBy = "reserva", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Pagamento> pagamentos;
+    private transient List<Pagamento> pagamentos;
 }

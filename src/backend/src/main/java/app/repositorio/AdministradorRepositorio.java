@@ -4,55 +4,55 @@ import app.modelo.*;
 import jakarta.persistence.*;
 import java.util.List;
 
-public class UsuarioRepositorio {
+public class AdministradorRepositorio {
 
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("seuCantinhoPU");
 
-    public void salvar(Usuario usuario) {
+    public void salvar(Administrador administrador) {
         EntityManager entityManager = emf.createEntityManager();
         try {
             entityManager.getTransaction().begin();
-            entityManager.persist(usuario);
+            entityManager.persist(administrador);
             entityManager.getTransaction().commit();
         } finally {
             entityManager.close();
         }
     }
 
-    public Usuario buscarPorId(Long id) {
+    public Administrador buscarPorId(Long id) {
         EntityManager entityManager = emf.createEntityManager();
         try {
-            return entityManager.find(Usuario.class, id);
+            return entityManager.find(Administrador.class, id);
         } finally {
             entityManager.close();
         }
     }
 
-    public List<Usuario> listar() {
+    public List<Administrador> listar() {
         EntityManager entityManager = emf.createEntityManager();
         try {
-            return entityManager.createQuery("FROM Usuario", Usuario.class).getResultList();
+            return entityManager.createQuery("SELECT u FROM Usuario u WHERE TYPE(u) = Administrador", Administrador.class).getResultList();
         } finally {
             entityManager.close();
         }
     }
 
-    public void atualizar(Usuario usuario) {
+    public void atualizar(Administrador administrador) {
         EntityManager entityManager = emf.createEntityManager();
         try {
             entityManager.getTransaction().begin();
-            entityManager.merge(usuario);
+            entityManager.merge(administrador);
             entityManager.getTransaction().commit();
         } finally {
             entityManager.close();
         }
     }
 
-    public void atualizarParcialmente(Long id, Usuario dadosNovos) {
+    public void atualizarParcialmente(Long id, Administrador dadosNovos) {
         EntityManager entityManager = emf.createEntityManager();
         try {
             entityManager.getTransaction().begin();
-            Usuario dadosExistentes = entityManager.find(Usuario.class, id);
+            Administrador dadosExistentes = entityManager.find(Administrador.class, id);
             if (dadosExistentes != null) {
                 if (dadosNovos.getNome() != null)
                     dadosExistentes.setNome(dadosNovos.getNome());
@@ -78,9 +78,9 @@ public class UsuarioRepositorio {
         EntityManager entityManager = emf.createEntityManager();
         try {
             entityManager.getTransaction().begin();
-            Usuario usuario = entityManager.find(Usuario.class, id);
-            if (usuario != null) {
-                entityManager.remove(usuario);
+            Administrador administrador = entityManager.find(Administrador.class, id);
+            if (administrador != null) {
+                entityManager.remove(administrador);
             }
             entityManager.getTransaction().commit();
         } finally {
@@ -88,10 +88,10 @@ public class UsuarioRepositorio {
         }
     }
 
-    public List<Usuario> listarPorTipo(Class<? extends Usuario> tipo) {
+    public List<Administrador> listarPorTipo(Class<? extends Administrador> tipo) {
         EntityManager entityManager = emf.createEntityManager();
         try {
-            return entityManager.createQuery("SELECT u FROM Usuario u WHERE TYPE(u) = :tipo", Usuario.class)
+            return entityManager.createQuery("SELECT u FROM Administrador u WHERE TYPE(u) = :tipo", Administrador.class)
             .setParameter("tipo", tipo).getResultList();
         } finally {
             entityManager.close();

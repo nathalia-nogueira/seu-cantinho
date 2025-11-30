@@ -48,5 +48,5 @@ public class Espaco {
     private Filial filial;
 
     @OneToMany(mappedBy = "espaco", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Reserva> reservas;
+    private transient List<Reserva> reservas;
 }

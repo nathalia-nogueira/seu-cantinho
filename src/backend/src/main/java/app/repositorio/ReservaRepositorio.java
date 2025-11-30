@@ -13,6 +13,15 @@ public class ReservaRepositorio {
         EntityManager entityManager = emf.createEntityManager();
         try {
             entityManager.getTransaction().begin();
+
+            Cliente cliente = entityManager.find(Cliente.class, reserva.getCliente().getId());
+            Espaco espaco = entityManager.find(Espaco.class, reserva.getEspaco().getId());
+
+            reserva.setCliente(cliente);
+            System.out.println("O cliente é " + reserva.getCliente());
+            reserva.setEspaco(espaco);
+            System.out.println("O espaço é " + reserva.getEspaco());
+
             entityManager.persist(reserva);
             entityManager.getTransaction().commit();
         } finally {

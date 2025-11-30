@@ -32,7 +32,7 @@ public class UsuarioServico {
         usuarioRepo.remover(usuarioId); 
     }
 
-    protected void validarUsuario(Usuario usuario) throws Exception {
+    public void validarUsuario(Usuario usuario) throws Exception {
         if (usuario.getNome() == null || usuario.getNome().isBlank()) {
             throw new Exception("Nome é obrigatório.");
         }
@@ -44,5 +44,9 @@ public class UsuarioServico {
         if (usuario.getEmail() == null || !usuario.getEmail().contains("@")) {
             throw new Exception("E-mail inválido.");
         }
+    }
+
+    public List<Usuario> listarPorTipo(Class<? extends Usuario> tipo) {
+        return usuarioRepo.listarPorTipo(tipo);
     }
 }

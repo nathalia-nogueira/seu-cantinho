@@ -2,15 +2,94 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Frontend Docker</title>
+    <title>Seu Cantinho - Protótipo funcional</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Frontend em Docker</h1>
-    <button onClick="testarConexaoComBD()">Ping no backend</button>
-    <p id="resBD"></p>
-    <button onClick="testarCamadaModelo()">Testar camada modelo</button>
-    <p id="resModelo"></p>
-    <script src="script.js"></script>
+    <header>
+        <h1>Seu Cantinho</h1>
+        <nav>
+            <button onClick="mostrarSecao('clientes')">Clientes</button>
+            <button onClick="mostrarSecao('administradores')">Administradores</button>
+            <button onClick="mostrarSecao('espacos')">Espaços</button>
+            <button onClick="mostrarSecao('filiais')">Filiais</button>
+            <button onClick="mostrarSecao('reservas')">Reservas</button>
+        </nav>
+    </header>
 
+    <main>
+        <section id="clientes" class="ativo">
+            <h2>Clientes</h2>
+            <form id="formCliente">
+                <input type="text" id="nomeCliente" placeholder="Nome" required>
+                <input type="text" id="cpfCliente" placeholder="CPF" required>
+                <input type="email" id="emailCliente" placeholder="Email" required>
+                <input type="text" id="telefoneCliente" placeholder="Telefone" required>
+                <button type="submit">Cadastrar</button>
+            </form>
+            <table id="tabelaClientes"></table>
+        </section>
+
+        <section id="administradores">
+            <h2>Administradores</h2>
+            <form id="formAdministrador">
+                <input type="text" id="nomeAdministrador" placeholder="Nome" required>
+                <input type="text" id="cpfAdministrador" placeholder="CPF" required>
+                <input type="email" id="emailAdministrador" placeholder="Email" required>
+                <input type="text" id="telefoneAdministrador" placeholder="Telefone" required>
+                <input type="number" id="filialAdministrador" placeholder="Filial" required>
+                <button type="submit">Cadastrar</button>
+            </form>
+            <table id="tabelaAdministradores"></table>
+        </section>
+
+        <section id="espacos">
+            <h2>Espaços</h2>
+            <form id="formEspaco">
+                <input type="text" id="nomeEspaco" placeholder="Nome" required>
+                <input type="text" id="descricaoEspaco" placeholder="Descricao" required>
+                <input type="number" id="capacidadeEspaco" placeholder="Capacidade" required>
+                <input type="number" id="precoDiariaEspaco" placeholder="Preço da diária" required>
+                <input type="number" id="filialEspaco" placeholder="ID da filial" required>
+                <input type="text" id="ruaEspaco" placeholder="Rua" required>          
+                <input type="text" id="cidadeEspaco" placeholder="Cidade" required>
+                <input type="text" id="estadoEspaco" placeholder="Estado" required>
+                <input type="number" id="numeroEspaco" placeholder="Numero" required>                
+                <button type="submit">Cadastrar</button>
+            </form>
+            <table id="tabelaEspacos"></table>
+        </section>
+
+        <section id="filiais">
+            <h2>Filiais</h2>
+            <form id="formFilial">
+                <input type="text" id="nomeFilial" placeholder="Nome" required>   
+                <input type="text" id="ruaFilial" placeholder="Rua" required>          
+                <input type="text" id="cidadeFilial" placeholder="Cidade" required>
+                <input type="text" id="estadoFilial" placeholder="Estado" required>
+                <input type="number" id="numeroFilial" placeholder="Numero" required>
+                <button type="submit">Cadastrar</button>
+            </form>
+            <table id="tabelaFiliais"></table>
+        </section>
+
+        <section id="reservas">
+            <h2>Reservas</h2>
+            <form id="formReserva">
+                <input type="datetime-local" id="inicioReserva" placeholder="Hora de início" required>
+                <input type="datetime-local" id="fimReserva" placeholder="Hora de fim" required>
+                <input type="number" id="sinalReserva" placeholder="Sinal" required>
+                <input type="number" id="idClienteReserva" placeholder="ID do Cliente" required>
+                <input type="number" id="idEspacoReserva" placeholder="ID do espaço" required>                
+                <button type="submit">Reservar</button>
+            </form>
+            <table id="tabelaReservas"></table>
+        </section>
+    </main>
+
+    <footer>
+        <p>Protótipo funcional desenvolvido por Nathália Nogueira como trabalho final de Design de Software</p>
+    </footer>
+    <script src="script.js"></script>
 </body>
 </html>

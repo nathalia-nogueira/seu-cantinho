@@ -16,14 +16,16 @@ public class Main {
         enableCORS("*", "GET, POST, PUT, PATCH, DELETE, OPTIONS", "*");
 
         Gson gson = new Gson();
-        UsuarioControlador usuarioControlador = new UsuarioControlador();
+        ClienteControlador clienteControlador = new ClienteControlador();
+        AdministradorControlador administradorControlador = new AdministradorControlador();
         EnderecoControlador enderecoControlador = new EnderecoControlador();
         FilialControlador filialControlador = new FilialControlador();
         PagamentoControlador pagamentoControlador = new PagamentoControlador();
         ReservaControlador reservaControlador = new ReservaControlador();
         EspacoControlador espacoControlador = new EspacoControlador();
 
-        usuarioControlador.rotas();
+        clienteControlador.rotas();
+        administradorControlador.rotas();
         enderecoControlador.rotas();
         filialControlador.rotas();
         pagamentoControlador.rotas();

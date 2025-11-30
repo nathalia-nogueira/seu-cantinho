@@ -29,14 +29,20 @@ public class EspacoRepositorio {
         }
     }
 
-    public List<Espaco> listar() {
-        EntityManager entityManager = emf.createEntityManager();
-        try {
-            return entityManager.createQuery("FROM Espaco", Espaco.class).getResultList();
-        } finally {
-            entityManager.close();
-        }
+   public List<Espaco> listar() {
+    EntityManager em = emf.createEntityManager();
+    try {
+        return em.createQuery(
+            "SELECT e FROM Espaco e " +
+            "JOIN FETCH e.filial " +
+            "JOIN FETCH e.endereco",
+            Espaco.class
+        ).getResultList();
+    } finally {
+        em.close();
     }
+}
+
 
     public void atualizar(Espaco espaco) {
         EntityManager entityManager = emf.createEntityManager();
@@ -99,15 +105,19 @@ public class EspacoRepositorio {
     }
 
     public List<Espaco> buscarDisponiveis(LocalDateTime inicio, LocalDateTime fim) {
+        System.out.println("Inicio eh " + inicio + " e fim eh " + fim);
         EntityManager entityManager = emf.createEntityManager();
         try {
             return entityManager.createQuery("""
                 SELECT e FROM Espaco e
                 WHERE e.id NOT IN (
                     SELECT r.espaco.id FROM Reserva r 
-                    WHERE (r.dataHoraInicio <= :fim AND r.dataHoraFim >= :inicio)
+                    WHERE r.dataHoraInicio < :fim AND r.dataHoraFim > :inicio
                 )
-            """, Espaco.class).setParameter("inicio", inicio).setParameter("fim", fim).getResultList();
+            """, Espaco.class)
+            .setParameter("inicio", inicio)
+            .setParameter("fim", fim)
+            .getResultList();
         } finally {
             entityManager.close();
         }
